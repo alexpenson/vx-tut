@@ -1,7 +1,10 @@
+import React from 'react';
+
 import { appleStock } from '@vx/mock-data';
 import { Group } from '@vx/group';
 import { scaleTime, scaleLinear } from '@vx/scale';
-import { AreaClosed } from '@vx/shape';
+import { LinePath } from '@vx/shape';
+import { GlyphDot } from '@vx/glyph';
 import { AxisLeft, AxisBottom } from '@vx/axis';
 import { LinearGradient } from '@vx/gradient';
 import { extent, max } from 'd3-array';
@@ -44,14 +47,40 @@ export default () => (
 
       <Group top={margin.top} left={margin.left}>
 
-        <AreaClosed
+        <LinePath
           data={data}
           xScale={xScale}
           yScale={yScale}
           x={x}
           y={y}
-          fill={"url(#gradient)"}
-          stroke={""}
+  glyph={(d,i) => {
+	  return (
+		  <g key={`line-point-${i}`}>
+                <GlyphDot
+                  cx={xScale(x(d))}
+                  cy={yScale(y(d))}
+                  r={6}
+                  fill='#fff'
+                  stroke='#01f2ff'
+                  strokeWidth={10}
+                />
+                <GlyphDot
+                  cx={xScale(x(d))}
+                  cy={yScale(y(d))}
+                  r={6}
+                  fill='#01f2ff'
+                  stroke='#7e20dc'
+                  strokeWidth={3}
+                />
+                <GlyphDot
+                  cx={xScale(x(d))}
+                  cy={yScale(y(d))}
+                  r={4}
+                  fill='#ffffff'
+                />
+              </g>
+		  );
+      }}
         />
 
         <AxisLeft
